@@ -1,0 +1,42 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# data source 1
+annual_balance_sheets = pd.read_csv(r'C:\Users\Siphiwe\Desktop\projects\Py\CSV\Annual-balance-sheets-2007-2022-provisional.csv')
+
+
+# data source 2
+business_price_indexes = pd.read_csv('business-price-indexes-march-2024-quarter.csv')
+
+
+# clean data from source 1
+ABS_cleaned = annual_balance_sheets.dropna()
+
+
+# clean data from source 2
+BPI_cleaned = business_price_indexes.drop_duplicates()
+
+
+# merge data to simplify so we can perform analysis on integrated data
+merged_data_sources = pd.merge(ABS_cleaned, BPI_cleaned, on='common_column')
+
+
+# calculate mean of a numerical column
+mean_value = merged_data_sources['common_column'].mean()
+
+
+# plotting a histogram
+plt.hist(merged_data_sources['common_column'], bins=20, color='skyblue', edgecolor='black')
+plt.title('Distribution of Common Column')
+plt.xlabel('Value')
+plt.ylabel('Frequency')
+plt.grid(True)
+plt.show()
+
+
+# extracting insights
+print(f"Mean value of common_column: {mean_value}")
+
+
+# exporting cleaned data or results of analysis
+merged_data_sources.to_csv('results/merged_data.csv', index=False)
