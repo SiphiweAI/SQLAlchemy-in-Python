@@ -1,0 +1,35 @@
+from sqlalchemy import create_engine, ForeignKey, Column, String, Integer, CHAR
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+
+# to define SQLAlchemy engine and base
+engine = create_engine('sqlite:///mydatabase.db', echo=True)
+Base = declarative_base()
+
+# to define a model using SQLAlchemy ORM
+class Client(Base):
+    __tablename__ = 'clients'
+
+    id = Column(Integer, primary_key=True)
+    username = Column(String(30), nullable=False)
+    email = Column(String(50), unique=True, nullable=False)
+
+# to create tables in the database
+Base.metadata.create_all(engine)
+
+# to create a session to interact with the database
+Session = sessionmaker(bind=engine)
+session = Session()
+
+# to add a user
+new_user = Client(username='john_doe', email='john@example.com')
+session.add(new_client)
+session.commit()
+
+# to query client
+clients = session.query(Client).all()
+for user in users:
+    print(client.id, client.username, client.email)
+
+# Close the session
+session.close()
